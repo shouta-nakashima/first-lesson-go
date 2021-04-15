@@ -124,4 +124,59 @@ func main() {
 	for k, v := range m4 {
 		fmt.Println(k, v)
 	}
+
+	//channel
+	//複数のゴルーチン間でのデータの受け渡しをするために設計されたデータ構造
+	var ch1 chan int
+
+	//受信専用
+	//var ch2 <-chan int
+
+	//送信専用
+	//var ch3 chan<- int
+
+	ch1 = make(chan int)     //初期化と書き込み可能な状態にする
+	ch2 := make(chan int, 5) //make関数で作成もできる 5はcap
+
+	fmt.Println(cap(ch1))
+	fmt.Println(cap(ch2))
+
+	//channnelにデータを送信
+	ch2 <- 1 //1と言うデータをch2に送信
+	ch2 <- 2
+	ch2 <- 3
+	fmt.Println(len(ch2))
+
+	//channelからデータの受信
+	i6 := <-ch2 //送信(データを挿入した物から順番に取得できる)
+	fmt.Println(i6)
+	fmt.Println("len", len(ch2))
+	//channnelを閉じる
+	close(ch1)
+	//channnel for
+	ch3 := make(chan int, 3)
+	ch3 <- 1
+	ch3 <- 2
+	ch3 <- 3
+	close(ch3) //channelをforで展開する場合は、closeしてから行う
+	for i := range ch3 {
+		fmt.Println(i)
+	}
+
+	//select
+	ch4 := make(chan int, 2)
+	ch5 := make(chan string, 2)
+
+	ch4 <- 5
+	ch5 <- "test"
+	ch4 <- 2
+	ch5 <- "develop"
+
+	select { //selectの処理はchannelの処理しか書けない。また処理はランダムに実行される
+	case v1 := <-ch4:
+		fmt.Println(v1 + 2000)
+	case v2 := <-ch5:
+		fmt.Println(v2 + "branch")
+	default:
+	}
 }
