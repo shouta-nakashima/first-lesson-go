@@ -179,4 +179,18 @@ func main() {
 		fmt.Println(v2 + "branch")
 	default:
 	}
+	//pointer type
+
+	//ポインタとは型とアドレスを組み合わせたデータ型
+	//参照型のデータ型はポインタを使わなくても良い(スライス、マップなどは参照渡しできるため)
+
+	var n3 int = 100
+	fmt.Println(n3)
+	fmt.Println(&n3) //n3のメモリ内のアドレスを表示
+
+	var p *int = &n3 //pはn3のアドレスを参照する
+	fmt.Println(p)   //pを出力するとアドレスが表示される
+	fmt.Println(*p)  //値を表示させたい場合は*をつけると表示される
+	*p = 255
+	fmt.Println(n3) //　*pに値を代入するとn3の値も更新される
 }
