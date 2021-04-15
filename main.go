@@ -83,4 +83,45 @@ func main() {
 	}
 	//可変超引数
 	fmt.Println(Sum(1, 3, 5))
+
+	//map
+	//明示的なmapの宣言
+	var m = map[string]int{"A": 1, "B": 2}
+	fmt.Println(m)
+
+	//暗黙的なmapの宣言
+	m2 := map[int]string{
+		1: "test",
+		2: "develop",
+	}
+	fmt.Println(m2)
+
+	//make関数でmapの作成
+	m3 := make(map[int]string)
+	fmt.Println(m3)
+
+	//mapに値の追加
+	m3[1] = "JAPAN" //map[key] = 追加したい値
+	m3[2] = "USA"
+	m3[3] = "CHINA"
+	fmt.Println(m3)
+	//値の取り出し ※mapにない値も取得できてしまうのでエラーハンドリングが必要
+	fmt.Println(m3[2])
+	//errorハンドリング
+	v, ok := m3[3] //値と取得出来たかをboolで取得することができる
+	if !ok {       //okがboolで返ってくるので判別できる
+		fmt.Println("Not Value")
+	}
+	fmt.Println(v, ok)
+
+	//delete
+	delete(m3, 3)
+	fmt.Println(m3)
+	//len関数
+	fmt.Println(len(m3))
+	//map for
+	m4 := map[string]int{"Apple": 100, "Banana": 200}
+	for k, v := range m4 {
+		fmt.Println(k, v)
+	}
 }
