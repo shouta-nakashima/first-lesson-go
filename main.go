@@ -11,6 +11,49 @@ func Sum(s ...int) int {
 	return n
 }
 
+//構造体
+type Point struct {
+	A int
+	B string
+	C float64
+}
+
+//埋め込み
+type BigPoint struct { //classの継承のようなイメージ
+	Point //Point Pointは同名の場合省略できる
+}
+
+type Member struct {
+	Name string
+}
+
+type Members struct {
+	Members []*Member
+}
+
+//struct and pointer
+func Pupdate(p Point) { //引数をstruct型
+	p.A = 100
+	p.B = "develop"
+	p.C = 2.14
+}
+
+func Pupdate2(p *Point) { //引数をポインタ型
+	p.A = 100
+	p.B = "develop"
+	p.C = 2.14
+}
+
+//struct メソッド
+func (p *Point) Set(i int) {
+	p.A = i
+}
+
+//コンストラクタ
+func NewPoint(a int, b string, c float64) *Point { // コンストラクタを作成する場合はNew構造体名とするのが一般的
+	return &Point{a, b, c} //定義する方の構造体を返すようにするのが基本
+}
+
 func main() {
 	//明示的な変数の定義
 	var i int = 100
@@ -193,4 +236,64 @@ func main() {
 	fmt.Println(*p)  //値を表示させたい場合は*をつけると表示される
 	*p = 255
 	fmt.Println(n3) //　*pに値を代入するとn3の値も更新される
+
+	//struct 構造体
+
+	//明示的な宣言
+	var p4 Point
+	fmt.Println(p4)
+
+	//暗黙的な宣言
+	p5 := Point{A: 3, B: "Go Go", C: 1.12} //初期値を設定することができる
+	fmt.Println(p5)
+	fmt.Println(p5.A, p5.B, p5.C) //値の取得方法
+	p5.A = 22                     //値の上書き
+	//struct and pointer
+	fmt.Println(p5.A)
+	p6 := Point{}
+	Pupdate(p6) // 更新出来ない structは値型のためポインタ型にする必要がある
+	fmt.Println(p6)
+
+	p7 := &Point{} //ポインタ型を生成
+	Pupdate2(p7)
+	fmt.Println(p7)
+
+	//メソッド
+	p7.Set(5)
+	fmt.Println(p7)
+	//埋め込み
+	bp := BigPoint{}
+	fmt.Println(bp)
+
+	bp.Point.A = 300
+	bp.Point.B = "production"
+	bp.Point.C = 3.14
+
+	fmt.Println(bp.A) //structで省略して記述している場合のみこのように直接アクセスできる
+
+	//コンストラクタ
+	p8 := NewPoint(1, "dev", 2.2)
+	fmt.Println(p8)
+	//構造体とスライス
+
+	ps := make([]Member, 4)
+	fmt.Println(ps)
+
+	ps[0].Name = "takeshi"
+	ps[1].Name = "taturo"
+	ps[2].Name = "eiji"
+	ps[3].Name = "ai"
+	fmt.Println(ps)
+
+	m11 := Member{"shota"}
+	m22 := Member{"takashi"}
+	m33 := Member{"ai"}
+	m44 := Member{"joe"}
+
+	ms := Members{}
+	ms.Members = append(ms.Members, &m11, &m22, &m33, &m44)
+
+	for _, v := range ms.Members {
+		fmt.Println(v)
+	}
 }
